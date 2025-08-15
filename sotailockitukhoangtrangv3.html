@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tạo Khoảng Cách Đặc Biệt</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #4e54c8, #8f94fb);
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+    }
+    #khoangcach-widget {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        border-radius: 15px;
+        max-width: 400px;
+        width: 100%;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    }
+    #khoangcach-widget h2 {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    #khoangcach-widget input,
+    #khoangcach-widget select {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 12px;
+        border-radius: 8px;
+        border: none;
+        outline: none;
+        font-size: 16px;
+    }
+    #khoangcach-widget button {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        margin-bottom: 10px;
+        transition: background 0.3s;
+    }
+    #generate {
+        background: #ff9800;
+        color: #fff;
+    }
+    #generate:hover {
+        background: #e68900;
+    }
+    #copy {
+        background: #4caf50;
+        color: #fff;
+    }
+    #copy:hover {
+        background: #3e8e41;
+    }
+    .result-box {
+        margin-top: 10px;
+        padding: 10px;
+        background: rgba(255,255,255,0.2);
+        border-radius: 8px;
+        word-break: break-all;
+        min-height: 40px;
+    }
+</style>
+</head>
+<body>
+<div id="khoangcach-widget">
+    <h2>🔠 Tạo Khoảng Cách Đặc Biệt</h2>
+    <input type="text" id="username" placeholder="Nhập tên (vd: so tai loc)">
+    <select id="space-type">
+        <option value="large">Khoảng trắng lớn</option>
+        <option value="small">Khoảng trắng nhỏ</option>
+    </select>
+    <button id="generate">Tạo Ngay</button>
+    <div class="result-box" id="result"></div>
+    <button id="copy">📋 Sao chép</button>
+</div>
+
+<script>
+    (function(){
+        const spaceChars = {
+            large: '\u2003', // khoảng trắng lớn
+            small: '\u200A'  // khoảng trắng nhỏ
+        };
+
+        const input = document.getElementById('username');
+        const spaceType = document.getElementById('space-type');
+        const resultBox = document.getElementById('result');
+        const generateBtn = document.getElementById('generate');
+        const copyBtn = document.getElementById('copy');
+
+        function createSpacedName(text, space) {
+            let noSpace = text.replace(/\s+/g, '');
+            let words = noSpace.match(/.{1,2}/g) || [];
+            return words.join(space);
+        }
+
+        generateBtn.addEventListener('click', () => {
+            let username = input.value.trim();
+            if (!username) {
+                alert('Vui lòng nhập tên!');
+                return;
+            }
+            let spacedName = createSpacedName(username, spaceChars[spaceType.value]);
+            resultBox.textContent = spacedName;
+        });
+
+        copyBtn.addEventListener('click', () => {
+            if (!resultBox.textContent) {
+                alert('Không có gì để sao chép!');
+                return;
+            }
+            navigator.clipboard.writeText(resultBox.textContent).then(() => {
+                alert('Đã sao chép!');
+            });
+        });
+    })();
+</script>
+</body>
+</html>
